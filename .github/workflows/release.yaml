@@ -58,12 +58,14 @@ jobs:
       - uses: goreleaser/goreleaser-action@v4
         if: steps.cache.outputs.cache-hit != 'true' # do not run if cache hit
         with:
+          distribution: goreleaser-pro
           version: latest
           args: release --rm-dist --split --timeout 2h
         env:
           GOOS: ${{ matrix.GOOS }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           COSIGN_EXPERIMENTAL: true
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
 
   release:
     name: Release
@@ -125,8 +127,10 @@ jobs:
       - uses: goreleaser/goreleaser-action@v4
         if: steps.cache.outputs.cache-hit != 'true' # do not run if cache hit
         with:
+          distribution: goreleaser-pro
           version: latest
           args: continue --merge --rm-dist --timeout 2h
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COSIGN_EXPERIMENTAL: true
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
